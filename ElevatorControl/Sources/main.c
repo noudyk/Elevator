@@ -19,6 +19,11 @@
 #include "lcdspi.h"
 #include "led7.h"
 #include "mcutilib.h"
+<<<<<<< HEAD
+#include "serialcan.h"
+#include "simpleQueue.h"
+=======
+>>>>>>> 1d4ef23e4658e99af80911edd178410c6915aeac
 
 #define LED1    PTS_PTS2
 #define LED2    PTS_PTS3
@@ -199,12 +204,15 @@ void controller() {
                     
                     switch(button_floor) {
                     case FLOOR1:
+                        addToQueue(1);
                         button_floor_str = "1";
                         break;
                     case FLOOR2:
+                        addToQueue(2);
                         button_floor_str = "2";
                         break;
                     case FLOOR3:
+                        addToQueue(3);
                         button_floor_str = "3";
                         break;
                     default:
@@ -231,6 +239,37 @@ void controller() {
                     lcd_puts(button_direction_str);
                     break;
                 case CMD_BUTTON_CAR:
+                    switch (rxmessage[1]){
+                        case BUTTON_FL1:{
+                            addToQueue(1);
+                            LCDprintf("Car FLOOR %d", rxmessage[1]);
+                            break;
+                        }
+                        case BUTTON_FL2:{
+                            addToQueue(2);
+                            LCDprintf("Car FLOOR %d", rxmessage[1]);
+                            break;
+                        }
+                        case BUTTON_FL3:{
+                            addToQueue(3);
+                            LCDprintf("Car FLOOR %d", rxmessage[1]);
+                            break;
+                        }
+                        case BUTTON_DOOR_CLOSE:{
+                            LCDprintf("Door Close");
+                            break;
+                        }
+                        case BUTTON_DOOR_OPEN:{
+                            LCDprintf("Door Open");
+                            break;
+                        }
+                        case BUTTON_STOP:{
+                            LCDprintf("Emergency Stop");
+                            break;
+                        }
+                        default:
+                            break;
+                    }
                     
                     break;
                 case CMD_DISP_APPEND:
